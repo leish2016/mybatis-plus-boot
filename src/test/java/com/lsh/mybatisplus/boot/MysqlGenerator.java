@@ -31,6 +31,7 @@ public class MysqlGenerator {
     static String DB_USER = "DBA_USER";
     static String DB_PWD = "dba123";
 
+    /**包名配置*/
     static String packageName = "com.lsh.mybatisplus.boot";
 
 
