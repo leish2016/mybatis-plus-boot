@@ -1,18 +1,16 @@
 package com.lsh.mybatisplus.boot;
 
-import com.baomidou.mybatisplus.core.exceptions.MybatisPlusException;
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
-import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.generator.AutoGenerator;
 import com.baomidou.mybatisplus.generator.InjectionConfig;
 import com.baomidou.mybatisplus.generator.config.*;
 import com.baomidou.mybatisplus.generator.config.po.TableInfo;
+import com.baomidou.mybatisplus.generator.config.rules.DateType;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 /**
  * <p>
@@ -27,33 +25,14 @@ public class MysqlGenerator {
 
     /**数据库连接配置*/
     static String DB_DRIVER_NAME = "com.mysql.jdbc.Driver";
-    static String DB_URL = "jdbc:mysql://192.168.0.154:3306/test001?useUnicode=true&useSSL=false&characterEncoding=utf8";
+    static String DB_URL = "jdbc:mysql://192.168.0.155:3306/test001?useUnicode=true&useSSL=false&characterEncoding=utf8";
     static String DB_USER = "DBA_USER";
     static String DB_PWD = "dba123";
 
     /**包名配置*/
-    static String packageName = "com.lsh.mybatisplus.boot";
-
-
-
-    /**
-     * <p>
-     * 读取控制台内容
-     * </p>
-     */
-    public static String scanner(String tip) {
-        Scanner scanner = new Scanner(System.in);
-        StringBuilder help = new StringBuilder();
-        help.append("请输入" + tip + "：");
-        System.out.println(help.toString());
-        if (scanner.hasNext()) {
-            String ipt = scanner.next();
-            if (StringUtils.isNotEmpty(ipt)) {
-                return ipt;
-            }
-        }
-        throw new MybatisPlusException("请输入正确的" + tip + "！");
-    }
+    static String PACKAGE_NAME = "com.lsh.mybatisplus.boot";
+    /**要生成代码的表名,注释setInclude默认生成所有表*/
+    static String TABLE_NAME = "user";
 
     /**
      * RUN THIS
@@ -69,6 +48,10 @@ public class MysqlGenerator {
         gc.setAuthor("leish");
         gc.setOpen(false);
         gc.setSwagger2(true);
+        //时间类型对应策略
+        gc.setDateType(DateType.ONLY_DATE);
+        //是否覆盖已有文件
+        gc.setFileOverride(true);
         mpg.setGlobalConfig(gc);
 
         // 数据源配置
@@ -83,7 +66,7 @@ public class MysqlGenerator {
         // 包配置
         PackageConfig pc = new PackageConfig();
         //pc.setModuleName();
-        pc.setParent(packageName);
+        pc.setParent(PACKAGE_NAME);
         mpg.setPackageInfo(pc);
 
         // 自定义配置
@@ -111,10 +94,11 @@ public class MysqlGenerator {
         strategy.setColumnNaming(NamingStrategy.underline_to_camel);
         //strategy.setSuperEntityClass("com.baomidou.ant.common.BaseEntity");
         strategy.setEntityLombokModel(true);
-        //strategy.setSuperControllerClass("com.baomidou.ant.common.BaseController");
-        strategy.setInclude(scanner("请输入要生成代码的数据表名"));
-        strategy.setSuperEntityColumns("id");
+        strategy.setSuperControllerClass("com.lsh.mybatisplus.boot.controller.BaseController");
+        strategy.setInclude(TABLE_NAME);
+        //strategy.setSuperEntityColumns("id");
         strategy.setControllerMappingHyphenStyle(true);
+        strategy.setRestControllerStyle(true);
         strategy.setTablePrefix(pc.getModuleName() + "_");
         mpg.setStrategy(strategy);
         // 选择 freemarker 引擎需要指定如下加，注意 pom 依赖必须有！
