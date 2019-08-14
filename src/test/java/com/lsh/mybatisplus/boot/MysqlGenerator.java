@@ -51,7 +51,7 @@ public class MysqlGenerator {
         //时间类型对应策略
         gc.setDateType(DateType.ONLY_DATE);
         //是否覆盖已有文件
-        gc.setFileOverride(true);
+        gc.setFileOverride(false);
         mpg.setGlobalConfig(gc);
 
         // 数据源配置

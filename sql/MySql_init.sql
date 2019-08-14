@@ -1,36 +1,47 @@
--- 创建数据库.
--- CREATE DATABASE test001;
+-- 1-创建数据库
+CREATE DATABASE if not exists test001;
 use test001;
 
--- 创建表
-/* ====================================================================================================================
-    userinfo 用户信息表
-==================================================================================================================== */
-DROP TABLE IF EXISTS userinfo;
-CREATE TABLE userinfo (
-    id                  bigint          PRIMARY KEY    auto_increment       COMMENT '编号',
-    name                varchar(32)     NOT NULL       UNIQUE               COMMENT '用户名',
-    phone               varchar(20)     NOT NULL                            COMMENT '手机号码',
-    create_at           datetime(3)     DEFAULT CURRENT_TIMESTAMP(3)        COMMENT '创建时间',
-    update_at           datetime(3)                                         COMMENT '更新时间'
+-- 2-创建表
+drop table if exists `user`;
+CREATE TABLE `user`
+(
+    id      		bigint           auto_increment  primary key        COMMENT '编号',
+    name        	varchar(255)     UNIQUE                  			COMMENT '用户名',
+    money     		decimal(11,2)   NOT NULL                            COMMENT '财富',
+    `des`           text                                        		COMMENT '描述',
+	create_time     datetime        DEFAULT  CURRENT_TIMESTAMP          COMMENT '创建时间',
+	update_time		datetime											COMMENT '更新时间'
 ) COMMENT = '用户信息表';
+-- 3-创建索引
+CREATE INDEX user_name_index ON `user`(name);
 
--- 创建索引
-CREATE INDEX userinfo_name ON userinfo (name);
--- drop INDEX userinfo_name
-/*------------------------------------------------------------------------------------------------------------------------
+-- 查看表
+show tables;
 
---------------------------------------------------------------------------------------------------------------------------*/
+-- 表结构
+DESCRIBE `user`;
 
--- 录入测试数据
-INSERT INTO userinfo VALUES('1','张珊','15507552211',CURRENT_TIMESTAMP,null);
-INSERT INTO userinfo VALUES('2','李思','15507552212',CURRENT_TIMESTAMP,null);
-INSERT INTO userinfo VALUES('3','王舞','15507552213',CURRENT_TIMESTAMP,null);
+-- 增:
+INSERT INTO test001.`user` (name, money, create_time, des) values
+('admin-1', 251, CURRENT_TIMESTAMP, '管理员...'),
+('admin-2', 252, CURRENT_TIMESTAMP, '管理员...'),
+('admin-3', 253, CURRENT_TIMESTAMP, '管理员...'),
+('admin-4', 254, CURRENT_TIMESTAMP, '管理员...'),
+('admin-5', 255, CURRENT_TIMESTAMP, '管理员...'),
+('admin-6', 256, CURRENT_TIMESTAMP, '管理员...'),
+('admin-7', 257, CURRENT_TIMESTAMP, '管理员...'),
+('admin-8', 258, CURRENT_TIMESTAMP, '管理员...'),
+('admin-9', 259, CURRENT_TIMESTAMP, '管理员...'),
+('admin-10', 260, CURRENT_TIMESTAMP, '管理员...');
 
--- 查询所有
-select * from userinfo;
+-- 删
+DELETE FROM  test001.`user` WHERE id=3;
 
--- 条件查询
-SELECT ID, CREATE_AT, NAME, PHONE FROM userinfo u WHERE u.NAME LIKE '李思' AND u.create_at >= '2017-09-25 00:00:00' AND u.create_at <= '2017-09-25 23:59:59'
+-- 改
+UPDATE test001.`user` SET money=2500, des='admin' WHERE id=1;
+
+-- 查
+select * from test001.`user` limit 10;
 
 
